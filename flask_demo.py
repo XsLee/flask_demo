@@ -11,18 +11,16 @@ from flask import Flask, render_template
 from flask.templating import Environment
 
 from pyecharts import HeatMap
-from pyecharts.engine import PyEchartsConfigMixin, ECHAERTS_TEMPLATE_FUNCTIONS
+from pyecharts.engine import ECHAERTS_TEMPLATE_FUNCTIONS
 from pyecharts.conf import PyEchartsConfig
 
 
 # ----- Adapter ---------
-class FlaskEchartsEnvironment(Environment, PyEchartsConfigMixin):
-    pyecharts_config = PyEchartsConfig(
-        jshost='/static/js'
-    )
+class FlaskEchartsEnvironment(Environment):
 
     def __init__(self, *args, **kwargs):
         super(FlaskEchartsEnvironment, self).__init__(*args, **kwargs)
+        self.pyecharts_config = PyEchartsConfig(jshost='/static/js')
         self.globals.update(ECHAERTS_TEMPLATE_FUNCTIONS)
 
 
