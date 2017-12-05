@@ -10,14 +10,13 @@ import datetime
 from flask import Flask, render_template
 from flask.templating import Environment
 
-from pyecharts import HeatMap
+from pyecharts import HeatMap, Map
 from pyecharts.engine import ECHAERTS_TEMPLATE_FUNCTIONS
 from pyecharts.conf import PyEchartsConfig
 
 
 # ----- Adapter ---------
 class FlaskEchartsEnvironment(Environment):
-
     def __init__(self, *args, **kwargs):
         super(FlaskEchartsEnvironment, self).__init__(*args, **kwargs)
         self.pyecharts_config = PyEchartsConfig(jshost='/static/js')
@@ -34,9 +33,14 @@ app = MyFlask(__name__)
 
 
 @app.route("/")
-def hello():
+def index():
+    return render_template('index.html')
+
+
+@app.route("/heatmap/")
+def heatmap():
     hm = create_heatmap()
-    return render_template('flask_tpl.html', hm=hm)
+    return render_template('heatmap.html', hm=hm)
 
 
 def create_heatmap():
@@ -53,6 +57,16 @@ def create_heatmap():
                 visual_orient="horizontal", visual_pos="center",
                 visual_top="80%", is_piecewise=True)
     return heatmap
+
+
+@app.route('/fujian/')
+def fujian():
+    value = [20, 190, 253, 77, 65]
+    attr = ['福州市', '厦门市', '南平市', '泉州市', '三明市']
+    map = Map("福建地图示例", width='100%', height=600)
+    map.add("", attr, value, maptype='福建', is_visualmap=True,
+            visual_text_color='#000')
+    return render_template('fujian_map.html', m=map)
 
 
 app.run(port=10200)
