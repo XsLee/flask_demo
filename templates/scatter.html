@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Proudly presented by ECharts</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"/>
+	{% for jsfile_name in script_list %}
+    <script src="{{ host }}/{{jsfile_name}}.js"></script>
+    {% endfor %}
+</head>
+<body style="padding-top: 70px;">
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Flask pyecharts Demo</a>
+
+            <ul class="nav navbar-nav">
+                <li><a href="javascript:">首页</a></li>
+            </ul>
+
+        </div>
+        <!-- /.nav-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<!-- /.navbar -->
+<div class="container">
+    <p>
+        这是一个由 Flask 和 pyecharts 整合的一个例子。主要特点在于：
+    </p>
+    <ul>
+        <li>完全使用本地的js文件</li>
+        <li>在模板文件中使用 echarts_* 模板函数。</li>
+    </ul>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">散点图示例</div>
+        <div class="panel-body">
+            {{myechart|safe}}
+        </div>
+    </div>
+        {{ echarts_js_content(s) }}
+</div>
+</body>
+
+
+</html>

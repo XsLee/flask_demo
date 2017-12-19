@@ -10,7 +10,7 @@ import datetime
 from flask import Flask, render_template
 from flask.templating import Environment
 
-from pyecharts import HeatMap, Map
+from pyecharts import HeatMap, Map,EffectScatter
 from pyecharts.engine import ECHAERTS_TEMPLATE_FUNCTIONS
 from pyecharts.conf import PyEchartsConfig
 
@@ -67,6 +67,23 @@ def fujian():
     map.add("", attr, value, maptype='福建', is_visualmap=True,
             visual_text_color='#000')
     return render_template('fujian_map.html', m=map)
+
+
+@app.route("/scatter/")
+def create_scatter():
+    es = effect_scatter_mk()
+    return render_template('scatter.html',
+                           myechart=es.render_embed(),
+                           host="../static/js/echarts",
+                           script_list=es.get_js_dependencies(),s=es)
+
+
+def effect_scatter_mk():
+    v1 = [10, 20, 30, 40, 50, 60]
+    v2 = [25, 20, 15, 10, 60, 33]
+    es = EffectScatter("动态散点图示例")
+    es.add("effectScatter", v1, v2)
+    return es
 
 
 app.run(port=10200)
